@@ -7,6 +7,8 @@ var express = require('express')
 , env = process.env.NODE_ENV || 'development'
 , config = require('./config')[env]
 
+var port = Number(process.env.PORT || 3000);
+
 // connect to Mongo when the app initializes
 mongoose.connect(config.db);
 
@@ -53,6 +55,6 @@ app.post('/pipe/user', api.createUser);
 app.get('/pipe/user/:id', api.getUserById);
 
 
-var server = app.listen(process.env.PORT || 3030, function() {
+var server = app.listen(port, function() {
 	console.log("Express server listening on port %d", server.address().port);
 });
