@@ -1,9 +1,9 @@
 module.exports = {
 	development: {
-		db: 'mongodb://localhost/sample_api',
+		db: 'mongodb://laser:laserlovesbread@ds029466.mlab.com:29466/pipeero',
 	},
 
 	production: {
-		db: 'mongodb://localhost/sample_api',
+		db: 'mongodb://laser:laserlovesbread@ds029466.mlab.com:29466/pipeero',
 	},
 };

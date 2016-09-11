@@ -34,7 +34,7 @@ var api = require('./controllers/api.js');
 // app.get('/thread', api.list);
 
 app.get('/test-system', function(request, response) {
-	response.render('systems functional');
+	response.send('systems functional');
 });
 
 app.get('/pipe/thing', api.listThings);
