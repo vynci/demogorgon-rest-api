@@ -31,6 +31,10 @@ var api = require('./controllers/api.js');
 // app.get('/thread/:title.:format?', api.show);
 // app.get('/thread', api.list);
 
+app.get('/test-system', function(request, response) {
+	response.render('systems functional');
+});
+
 app.get('/pipe/thing', api.listThings);
 app.get('/pipe/thing/:id', api.getThingById);
 app.post('/pipe/thing', api.createThing);
