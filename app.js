@@ -7,6 +7,7 @@ var express = require('express')
 , env = process.env.NODE_ENV || 'development'
 , config = require('./config')[env]
 
+var jwt    = require('jsonwebtoken');
 var port = Number(process.env.PORT || 3000);
 
 // connect to Mongo when the app initializes
@@ -26,16 +27,50 @@ app.use(function(req, res, next) {
 	next();
 });
 
-// set up the RESTful API, handler methods are defined in api.js
-var api = require('./controllers/api.js');
+app.set('superSecret', 'laser-secret');
 
-// app.post('/thread', api.create);
-// app.get('/thread/:title.:format?', api.show);
-// app.get('/thread', api.list);
+var api = require('./controllers/api.js');
+var apiRoutes = express.Router(); 
 
 app.get('/test-system', function(request, response) {
 	response.send('systems functional');
 });
+
+app.get('/pipe/user', api.listUsers)
+app.post('/pipe/user', api.createUser);
+app.get('/pipe/user/:id', api.getUserById);
+
+app.post('/pipe/authenticate', api.authenticateUser);
+
+apiRoutes.use(function(req, res, next) {
+
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  // decode token
+  if (token) {
+
+    // verifies secret and checks exp
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;    
+        next();
+      }
+    });
+
+  } else {
+    return res.status(403).send({ 
+        success: false, 
+        message: 'No token provided.' 
+    });
+    
+  }
+});
+
+app.use('/pipe', apiRoutes);
 
 app.get('/pipe/thing', api.listThings);
 app.get('/pipe/thing/:id', api.getThingById);
@@ -49,11 +84,6 @@ app.post('/pipe/widget', api.createWidget);
 app.get('/pipe/:userId/widget/:widgetId', api.getWidgetByUserAndThingId);
 app.put('/pipe/:userId/widget/:widgetId', api.updateWidgetByUserAndThingId);
 app.delete('/pipe/:userId/widget/:widgetId', api.deleteWidgetByUserAndThingId);
-
-app.get('/pipe/user', api.listUsers)
-app.post('/pipe/user', api.createUser);
-app.get('/pipe/user/:id', api.getUserById);
-
 
 var server = app.listen(port, function() {
 	console.log("Express server listening on port %d", server.address().port);

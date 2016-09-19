@@ -3,6 +3,8 @@ var Post = require('../models/post.js');
 var Thing = require('../models/thing.js');
 var Widget = require('../models/widget.js');
 var User = require('../models/user.js');
+var jwt    = require('jsonwebtoken');
+var app = require('../app.js');
 
 exports.createThing = function(req, res) {
 	console.log(req.body);
@@ -127,9 +129,12 @@ exports.createUser = function(req, res) {
 
 	var user = new User({
 		name: req.body.name,
-		owner: req.body.email,
+        email: req.body.email,
+        password: req.body.password,
 		status: req.body.status,
 	});
+    
+    console.log(req.body);
 
 	user.save(function (err, thing) {
 		if (err){
@@ -140,6 +145,41 @@ exports.createUser = function(req, res) {
 			return res.json(thing);
 		}
 	});
+}
+
+exports.authenticateUser = function(req, res) {
+    console.log(req.body);
+	User.findOne({
+        email: req.body.email
+    }, function(err, user) {
+        if (err) throw err;
+
+        if (!user) {
+            res.json({ success: false, message: 'Authentication failed. User not found.' });
+        } else if (user) {
+            if (user.password != req.body.password) {
+                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+            } else {
+
+                // if user is found and password is right
+                // create a token
+                var userInfo = {
+                    name : user.name,
+                    email: user.email
+                }
+                var token = jwt.sign(userInfo, app.get('superSecret'), {
+                    // expiresInMinutes: 1440 // expires in 24 hours
+                });
+
+                // return the information including token as JSON
+                res.json({
+                    success: true,
+                    message: 'Enjoy your token!',
+                    token: token
+                });
+            }   
+        }
+  });
 }
 
 exports.listUsers = function(req, res) {
