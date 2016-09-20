@@ -133,7 +133,7 @@ exports.createUser = function(req, res) {
         password: req.body.password,
 		status: req.body.status,
 	});
-    
+
     console.log(req.body);
 
 	user.save(function (err, thing) {
@@ -149,7 +149,7 @@ exports.createUser = function(req, res) {
 
 exports.authenticateUser = function(req, res) {
     console.log(req.body);
-	User.findOne({
+		User.findOne({
         email: req.body.email
     }, function(err, user) {
         if (err) throw err;
@@ -157,13 +157,14 @@ exports.authenticateUser = function(req, res) {
         if (!user) {
             res.json({ success: false, message: 'Authentication failed. User not found.' });
         } else if (user) {
-            if (user.password != req.body.password) {
+            if (user.password !== req.body.password) {
                 res.json({ success: false, message: 'Authentication failed. Wrong password.' });
             } else {
 
                 // if user is found and password is right
                 // create a token
                 var userInfo = {
+									  id : user._id,
                     name : user.name,
                     email: user.email
                 }
@@ -175,9 +176,10 @@ exports.authenticateUser = function(req, res) {
                 res.json({
                     success: true,
                     message: 'Enjoy your token!',
+										data : userInfo,
                     token: token
                 });
-            }   
+            }
         }
   });
 }

@@ -1,6 +1,7 @@
 var express = require('express')
 , mongoose = require('mongoose')
 , app = module.exports = express()
+, cors = require('cors')
 , bodyParser = require('body-parser')
 , methodOverride = require('method-override')
 
@@ -19,18 +20,20 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'))
 
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+app.use(cors());
 
-	next();
-});
+// app.use(function(req, res, next) {
+// 	res.header("Access-Control-Allow-Origin", "*");
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// 	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//
+// 	next();
+// });
 
 app.set('superSecret', 'laser-secret');
 
 var api = require('./controllers/api.js');
-var apiRoutes = express.Router(); 
+var apiRoutes = express.Router();
 
 app.get('/test-system', function(request, response) {
 	response.send('systems functional');
@@ -45,28 +48,29 @@ app.post('/pipe/authenticate', api.authenticateUser);
 apiRoutes.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  var token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['Authorization'];
 
   // decode token
   if (token) {
 
     // verifies secret and checks exp
-    jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
       if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
+        req.decoded = decoded;
         next();
       }
     });
 
   } else {
-    return res.status(403).send({ 
-        success: false, 
-        message: 'No token provided.' 
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
     });
-    
+
   }
 });
 
