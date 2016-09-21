@@ -155,10 +155,10 @@ exports.authenticateUser = function(req, res) {
         if (err) throw err;
 
         if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+            res.json({ success: false, message: 'Sorry, User not found.' });
         } else if (user) {
             if (user.password !== req.body.password) {
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                res.json({ success: false, message: 'Sorry, Wrong password.' });
             } else {
 
                 // if user is found and password is right
