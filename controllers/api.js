@@ -115,6 +115,14 @@ exports.getWidgetsByUserId = (function(req, res) {
 exports.getWidgetByUserAndThingId = (function(req, res) {
 	console.log(req.params);
 
+	Widget.find({owner: req.params.userId, thingId: req.params.thingId}, function(error, widget) {
+		res.send(widget);
+	})
+});
+
+exports.getWidgetByUserAndWidgetId = (function(req, res) {
+	console.log(req.params);
+
 	Widget.find({owner: req.params.userId, _id: req.params.widgetId}, function(error, widget) {
 		res.send(widget);
 	})

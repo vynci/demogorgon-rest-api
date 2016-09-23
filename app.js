@@ -78,6 +78,8 @@ app.use('/pipe', apiRoutes);
 
 app.put('/pipe/user/:userId', api.updateUser);
 
+
+//thing routes//
 app.get('/pipe/thing', api.listThings);
 app.get('/pipe/thing/:id', api.getThingById);
 app.post('/pipe/thing', api.createThing);
@@ -88,9 +90,13 @@ app.get('/pipe/:userId/thing/:thingId', api.getThingByUserAndThingId);
 app.put('/pipe/:userId/thing/:thingId', api.updateThingByUserIdAndThingId);
 app.delete('/pipe/:userId/thing/:thingId', api.deleteThingByUserIdAndThingId);
 
+///widget routes//
 app.get('/pipe/:userId/widget', api.getWidgetsByUserId);
 app.post('/pipe/widget', api.createWidget);
-app.get('/pipe/:userId/widget/:widgetId', api.getWidgetByUserAndThingId);
+
+app.get('/pipe/:userId/widget/:widgetId', api.getWidgetByUserAndWidgetId);
+app.get('/pipe/:userId/widgetByThing/:thingId', api.getWidgetByUserAndThingId);
+
 app.put('/pipe/:userId/widget/:widgetId', api.updateWidgetByUserAndThingId);
 app.delete('/pipe/:userId/widget/:widgetId', api.deleteWidgetByUserAndThingId);
 
