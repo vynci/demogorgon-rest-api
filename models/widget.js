@@ -6,6 +6,7 @@ var widgetSchema = new Schema({
 	name:  String,
 	description:  String,
 	widgetInfo: Schema.Types.Mixed,
+    dashboardId : String,
 	thingType: String,
 	components: Schema.Types.Mixed,
 	owner: String,

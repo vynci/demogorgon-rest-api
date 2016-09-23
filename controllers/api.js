@@ -53,6 +53,29 @@ exports.getThingByUserAndThingId = (function(req, res) {
 	})
 });
 
+exports.updateThingByUserIdAndThingId = (function(req, res) {
+    console.log(req.params);
+	var body = req.body;
+
+	Thing.findOneAndUpdate({owner: req.params.userId, _id: req.params.thingId}, { $set: body}, {new: true}, function (error, widget) {
+		if (error) {
+			return res.json(error);
+		}
+		res.send(widget);
+	});
+});
+
+exports.deleteThingByUserIdAndThingId = (function(req, res) {
+	console.log(req.params);
+
+	Thing.findOneAndRemove({owner: req.params.userId, _id: req.params.thingId}, function (error, widget) {
+		if (error) {
+			return res.json(error);
+		}
+		res.send('widget successfully deleted');
+	});
+});
+
 
 //// Widget API //
 exports.createWidget = function(req, res) {
@@ -121,6 +144,53 @@ exports.deleteWidgetByUserAndThingId = (function(req, res) {
 		res.send('widget successfully deleted');
 	});
 
+});
+
+//// Dashboard API //
+exports.createDashboard = function(req, res) {
+	console.log(req.body);
+	var dashboard = new Dashboard({
+		name: req.body.name,
+		owner: req.body.owner,
+		description: req.body.description || '',
+        widgets : []
+	});
+
+	dashboard.save(function (err, widget) {
+		if (err){
+			return res.json(err);
+		}
+		else {
+			return res.json(widget);
+		}
+	});
+}
+
+exports.getDashboardsByUserId = (function(req, res) {
+	console.log(req.params);
+	Dashboard.find({owner: req.params.userId}, function(error, dashboards) {
+		res.send(dashboards);
+	})
+});
+
+exports.updateDashboardByUserAndThingId = (function(req, res) {
+	var body = req.body;
+	Dashboard.findOneAndUpdate({owner: req.params.userId, _id: req.params.dashboardId}, { $set: body}, {new: true}, function (error, dashboard) {
+		if (error) {
+			return res.json(error);
+		}
+		res.send(dashboard);
+	});
+});
+
+exports.deleteWidgetByUserAndThingId = (function(req, res) {
+	console.log(req.params)
+	Dashboard.findOneAndRemove({owner: req.params.userId, _id: req.params.dashboardId}, function (error, dashboard) {
+		if (error) {
+			return res.json(error);
+		}
+		res.send('dashboard successfully deleted');
+	});
 });
 
 //// User API //
@@ -194,6 +264,19 @@ exports.getUserById = (function(req, res) {
 	User.findOne({_id: req.params.id}, function(error, user) {
 		res.send(user);
 	})
+});
+
+exports.updateUser = (function(req, res) {
+
+	var body = req.body;
+
+	User.findOneAndUpdate({owner: req.params.userId}, { $set: body}, {new: true}, function (error, user) {
+		if (error) {
+			return res.json(error);
+		}
+		res.send(user);
+	});
+
 });
 
 

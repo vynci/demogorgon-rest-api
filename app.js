@@ -39,9 +39,9 @@ app.get('/test-system', function(request, response) {
 	response.send('systems functional');
 });
 
-app.get('/pipe/user', api.listUsers)
+// app.get('/pipe/user', api.listUsers)
 app.post('/pipe/user', api.createUser);
-app.get('/pipe/user/:id', api.getUserById);
+// app.get('/pipe/user/:id', api.getUserById);
 
 app.post('/pipe/authenticate', api.authenticateUser);
 
@@ -76,12 +76,17 @@ apiRoutes.use(function(req, res, next) {
 
 app.use('/pipe', apiRoutes);
 
+app.put('/pipe/user/:userId', api.updateUser);
+
 app.get('/pipe/thing', api.listThings);
 app.get('/pipe/thing/:id', api.getThingById);
 app.post('/pipe/thing', api.createThing);
 
 app.get('/pipe/:userId/thing', api.getThingsByUserId);
 app.get('/pipe/:userId/thing/:thingId', api.getThingByUserAndThingId);
+
+app.put('/pipe/:userId/thing/:thingId', api.updateThingByUserIdAndThingId);
+app.delete('/pipe/:userId/thing/:thingId', api.deleteThingByUserIdAndThingId);
 
 app.get('/pipe/:userId/widget', api.getWidgetsByUserId);
 app.post('/pipe/widget', api.createWidget);
