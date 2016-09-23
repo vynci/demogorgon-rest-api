@@ -2,6 +2,7 @@ var Thread = require('../models/thread.js');
 var Post = require('../models/post.js');
 var Thing = require('../models/thing.js');
 var Widget = require('../models/widget.js');
+var Dashboard = require('../models/dashboard.js');
 var User = require('../models/user.js');
 var jwt    = require('jsonwebtoken');
 var app = require('../app.js');
@@ -183,7 +184,7 @@ exports.updateDashboardByUserAndThingId = (function(req, res) {
 	});
 });
 
-exports.deleteWidgetByUserAndThingId = (function(req, res) {
+exports.deleteDashboardByUserAndThingId = (function(req, res) {
 	console.log(req.params)
 	Dashboard.findOneAndRemove({owner: req.params.userId, _id: req.params.dashboardId}, function (error, dashboard) {
 		if (error) {
