@@ -90,6 +90,7 @@ exports.createWidget = function(req, res) {
 		thingId : req.body.thingId || '',
 		buttonLabel : req.body.buttonLabel || '',
 		payload : req.body.payload || '',
+		inputUnit : req.body.inputUnit || '',
 		components : req.body.components || []
 	});
 
@@ -279,7 +280,7 @@ exports.updateUser = (function(req, res) {
 
 	var body = req.body;
 
-	User.findOneAndUpdate({owner: req.params.userId}, { $set: body}, {new: true}, function (error, user) {
+	User.findOneAndUpdate({_id: req.params.userId}, { $set: body}, {new: true}, function (error, user) {
 		if (error) {
 			return res.json(error);
 		}

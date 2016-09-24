@@ -6,11 +6,12 @@ var widgetSchema = new Schema({
 	name:  String,
 	description:  String,
 	widgetInfo: Schema.Types.Mixed,
-    dashboardId : String,
+  dashboardId : String,
 	thingType: String,
 	components: Schema.Types.Mixed,
 	owner: String,
 	payload: String,
+	inputUnit : String,
 	thingId: String,
 	buttonLabel: String,
 	createDate: {type: Date, default: Date.now}
