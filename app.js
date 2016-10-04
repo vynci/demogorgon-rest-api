@@ -100,6 +100,13 @@ app.get('/pipe/:userId/widgetByThing/:thingId', api.getWidgetByUserAndThingId);
 app.put('/pipe/:userId/widget/:widgetId', api.updateWidgetByUserAndThingId);
 app.delete('/pipe/:userId/widget/:widgetId', api.deleteWidgetByUserAndThingId);
 
+//dashboard routes//
+
+app.get('/pipe/:userId/dashboard', api.getDashboardsByUserId);
+app.post('/pipe/dashboard', api.createDashboard);
+app.put('/pipe/:userId/dashboard/:dashboardId', api.updateDashboardByUserAndThingId);
+app.delete('/pipe/:userId/dashboard/:dashboardId', api.deleteDashboardByUserAndThingId);
+
 var server = app.listen(port, function() {
 	console.log("Express server listening on port %d", server.address().port);
 });
