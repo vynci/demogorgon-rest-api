@@ -7,6 +7,7 @@ var dashboardSchema = new Schema({
 	description:  String,
 	owner: String,
     widgets : Array,
+    isPrivate:  {type: Boolean, default: false},
 	createDate: {type: Date, default: Date.now}
 });
 

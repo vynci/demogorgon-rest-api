@@ -39,6 +39,9 @@ app.get('/test-system', function(request, response) {
 	response.send('systems functional');
 });
 
+app.get('/pipe/public/:dashboardId/widget', api.getWidgetsByDashboardId);
+app.get('/pipe/public/dashboard', api.getPublicDashBoards);
+
 // app.get('/pipe/user', api.listUsers)
 app.post('/pipe/user', api.createUser);
 // app.get('/pipe/user/:id', api.getUserById);

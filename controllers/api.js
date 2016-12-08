@@ -113,6 +113,14 @@ exports.getWidgetsByUserId = (function(req, res) {
 	})
 });
 
+exports.getWidgetsByDashboardId = (function(req, res) {
+	console.log("getWidgetsByDashboardId", req.params);
+
+	Widget.find({dashboardId: req.params.dashboardId}, function(error, widgets) {
+		res.send(widgets);
+	})
+});
+
 exports.getWidgetByUserAndThingId = (function(req, res) {
 	console.log(req.params);
 
@@ -133,7 +141,9 @@ exports.updateWidgetByUserAndThingId = (function(req, res) {
 
 	var body = req.body;
 	var id = req.params.widgetId;
-
+    
+    console.log("updateWidgetByUserAndThingId", body);
+    
 	Widget.findOneAndUpdate({owner: req.params.userId, _id: req.params.widgetId}, { $set: body}, {new: true}, function (error, widget) {
 		if (error) {
 			return res.json(error);
@@ -175,6 +185,13 @@ exports.createDashboard = function(req, res) {
 		}
 	});
 }
+
+exports.getPublicDashBoards = (function(req, res) {
+	console.log(req.params);
+	Dashboard.find({isPrivate: false}, function(error, dashboards) {
+		res.send(dashboards);
+	})
+});
 
 exports.getDashboardsByUserId = (function(req, res) {
 	console.log(req.params);
