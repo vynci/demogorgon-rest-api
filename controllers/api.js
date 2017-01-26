@@ -83,9 +83,12 @@ exports.deleteThingByUserIdAndThingId = (function(req, res) {
 exports.getLogsByThingId = (function(req, res) {
 	console.log(req.params);
 
-	Log.find({thingId: req.params.thingId}, function(error, logs) {
+	// Log.find({thingId: req.params.thingId}, function(error, logs) {
+	// 	res.send(logs);
+	// })
+	Log.find({thingId: req.params.thingId}).limit(100).sort({ createDate: -1 }).exec(function(error, logs) {
 		res.send(logs);
-	})
+	});
 });
 
 exports.createLog = function(req, res) {
@@ -176,9 +179,9 @@ exports.updateWidgetByUserAndThingId = (function(req, res) {
 
 	var body = req.body;
 	var id = req.params.widgetId;
-    
+
     console.log("updateWidgetByUserAndThingId", body);
-    
+
 	Widget.findOneAndUpdate({owner: req.params.userId, _id: req.params.widgetId}, { $set: body}, {new: true}, function (error, widget) {
 		if (error) {
 			return res.json(error);
