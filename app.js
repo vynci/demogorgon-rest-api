@@ -46,6 +46,9 @@ app.get('/pipe/public/dashboard', api.getPublicDashBoards);
 app.post('/pipe/user', api.createUser);
 // app.get('/pipe/user/:id', api.getUserById);
 
+app.post('/pipe/log', api.createLog);
+app.get('/pipe/log/:thingId', api.getLogsByThingId);
+
 app.post('/pipe/authenticate', api.authenticateUser);
 
 apiRoutes.use(function(req, res, next) {

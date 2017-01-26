@@ -1,6 +1,7 @@
 var Thread = require('../models/thread.js');
 var Post = require('../models/post.js');
 var Thing = require('../models/thing.js');
+var Log = require('../models/log.js');
 var Widget = require('../models/widget.js');
 var Dashboard = require('../models/dashboard.js');
 var User = require('../models/user.js');
@@ -77,6 +78,34 @@ exports.deleteThingByUserIdAndThingId = (function(req, res) {
 	});
 });
 
+/// Logs API ///
+
+exports.getLogsByThingId = (function(req, res) {
+	console.log(req.params);
+
+	Log.find({owner: req.params.thingId}, function(error, logs) {
+		res.send(logs);
+	})
+});
+
+exports.createLog = function(req, res) {
+	console.log(req.body);
+	var log = new Thing({
+		owner: req.body.owner,
+		value: req.body.value,
+        thingId : req.body.thingId
+	});
+
+	log.save(function (err, log) {
+		if (err){
+			return res.json(err);
+		}
+
+		else {
+			return res.json(log);
+		}
+	});
+}
 
 //// Widget API //
 exports.createWidget = function(req, res) {
