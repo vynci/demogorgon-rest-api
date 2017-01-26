@@ -83,14 +83,14 @@ exports.deleteThingByUserIdAndThingId = (function(req, res) {
 exports.getLogsByThingId = (function(req, res) {
 	console.log(req.params);
 
-	Log.find({owner: req.params.thingId}, function(error, logs) {
+	Log.find({thingId: req.params.thingId}, function(error, logs) {
 		res.send(logs);
 	})
 });
 
 exports.createLog = function(req, res) {
 	console.log(req.body);
-	var log = new Thing({
+	var log = new Log({
 		owner: req.body.owner,
 		value: req.body.value,
         thingId : req.body.thingId
@@ -104,6 +104,12 @@ exports.createLog = function(req, res) {
 		else {
 			return res.json(log);
 		}
+	});
+}
+
+exports.getAllLogs = function(req, res) {
+	Log.find(function(err, logs) {
+		res.send(logs);
 	});
 }
 

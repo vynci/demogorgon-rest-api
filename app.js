@@ -42,12 +42,13 @@ app.get('/test-system', function(request, response) {
 app.get('/pipe/public/:dashboardId/widget', api.getWidgetsByDashboardId);
 app.get('/pipe/public/dashboard', api.getPublicDashBoards);
 
+app.post('/pipe/log', api.createLog);
+app.get('/pipe/log', api.getAllLogs);
+app.get('/pipe/log/:thingId', api.getLogsByThingId);
+
 // app.get('/pipe/user', api.listUsers)
 app.post('/pipe/user', api.createUser);
 // app.get('/pipe/user/:id', api.getUserById);
-
-app.post('/pipe/log', api.createLog);
-app.get('/pipe/log/:thingId', api.getLogsByThingId);
 
 app.post('/pipe/authenticate', api.authenticateUser);
 

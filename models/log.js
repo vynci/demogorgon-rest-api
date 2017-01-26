@@ -3,7 +3,6 @@ var mongoose = require('mongoose')
 ,ObjectId = Schema.ObjectId;
 
 var logSchema = new Schema({
-	name:  String,
 	value:  String,
     thingId : String,
 	createDate: {type: Date, default: Date.now},
